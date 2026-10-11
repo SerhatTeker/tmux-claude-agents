@@ -1,14 +1,15 @@
 {
-  "name": "tmux-claude-hatch",
+  "name": "tmux-claude-agents",
+  "description": "Claude Code hooks for the tmux-claude-agents tmux plugin: agent state and name on each tmux window, a fresh picker cache, and a terminal bell when an agent needs you.",
   "owner": {
-    "name": "Takuya Matsuyama",
-    "email": "hi@craftz.dog"
+    "name": "SerhatTeker",
+    "email": "me@serhatteker.com"
   },
   "plugins": [
     {
-      "name": "tmux-claude-hatch",
-      "source": "./plugins/tmux-claude-hatch",
-      "description": "Companion hooks for tmux-claude-hatch: ring the terminal bell when an agent needs you, and keep the picker's agent cache fresh."
+      "name": "tmux-claude-agents",
+      "source": "./plugins/tmux-claude-agents",
+      "description": "Companion hooks for tmux-claude-agents: ring the terminal bell when an agent needs you, and keep the picker's agent cache fresh."
     }
   ]
 }

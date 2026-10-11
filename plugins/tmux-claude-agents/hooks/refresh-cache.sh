@@ -16,13 +16,13 @@
 # Claude running outside tmux would overwrite a good cache with an empty one.
 [ -n "${TMUX:-}" ] || exit 0
 
-# The Claude plugin ships inside the tmux-claude-hatch repo, so a
+# The Claude plugin ships inside the tmux-claude-agents repo, so a
 # marketplace checkout has scripts/ two levels up. The tpm paths cover a plugin
 # dir installed on its own, alongside a normal tpm install of the tmux side.
 for candidate in \
   "${CLAUDE_PLUGIN_ROOT:-}/../../scripts/picker.sh" \
-  "$HOME/.tmux/plugins/tmux-claude-hatch/scripts/picker.sh" \
-  "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins/tmux-claude-hatch/scripts/picker.sh"; do
+  "$HOME/.tmux/plugins/tmux-claude-agents/scripts/picker.sh" \
+  "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins/tmux-claude-agents/scripts/picker.sh"; do
   if [ -x "$candidate" ]; then
     picker="$candidate"
     break

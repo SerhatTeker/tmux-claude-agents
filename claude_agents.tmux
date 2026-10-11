@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# tmux-claude-hatch
+# tmux-claude-agents
 #
 # List, monitor status, and jump across nested Claude Code sessions from a
 # single popup. tpm runs this file as an executable on tmux startup; it reads
@@ -31,3 +31,22 @@ if [ "$(get_tmux_option @claude_forward_bell 'on')" = 'on' ]; then
   tmux set-hook -g alert-bell \
     "run-shell -b \"$CURRENT_DIR/scripts/bell.sh '#{q:hook_session_name}'\""
 fi
+
+# Agent state dot, drawn by a window format that includes
+#   #{?@claude_state,#{E:@claude_dot} ,}
+# @claude_state is set per window by the Claude plugin's agent-state.sh. States
+# and colors follow herdr: idle ○ green, working ● yellow, blocked ● red,
+# done ● cyan (finished, not looked at yet), anything else · grey. Basic ANSI
+# colors, so the shades come from the terminal theme. Set @claude_dot yourself
+# to draw it differently.
+if [ -z "$(tmux show-option -gqv @claude_dot)" ]; then
+  tmux set-option -g @claude_dot '#{?#{==:#{@claude_state},blocked},#[fg=red]●,#{?#{==:#{@claude_state},working},#[fg=yellow]●,#{?#{==:#{@claude_state},done},#[fg=cyan]●,#{?#{==:#{@claude_state},idle},#[fg=green]○,#[fg=brightblack]·}}}}'
+fi
+
+# `done` becomes idle once its window is looked at: switched to within a
+# session, or current in a session a client switches to. Indexed, so hooks the
+# user has on the same events stay.
+tmux set-hook -g 'session-window-changed[42]' \
+  'if -F "#{==:#{@claude_state},done}" "set -w @claude_state idle"'
+tmux set-hook -g 'client-session-changed[42]' \
+  'if -F "#{==:#{@claude_state},done}" "set -w @claude_state idle"'

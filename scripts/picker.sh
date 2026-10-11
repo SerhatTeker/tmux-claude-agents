@@ -43,13 +43,13 @@ fi
 
 if [ "${1:-}" = '--copy' ]; then
   copy_to_clipboard "${2:-}" &&
-    tmux display-message "tmux-claude-hatch: copied ${2:-}"
+    tmux display-message "tmux-claude-agents: copied ${2:-}"
   exit 0
 fi
 
 for tool in fzf jq "$(get_tmux_option @claude_command 'claude')"; do
   command -v "$tool" >/dev/null 2>&1 || {
-    tmux display-message "tmux-claude-hatch: $tool is required for the picker"
+    tmux display-message "tmux-claude-agents: $tool is required for the picker"
     exit 0
   }
 done
@@ -81,7 +81,7 @@ fi
 # beat so the process is gone by the time agents.sh looks for it.
 # ctrl-y copies the agent's location (session:window.pane, e.g. claude-88074b0e:0.0)
 # and closes the picker.
-sel=$("${list_cmd[@]}" | fzf --ansi --delimiter='\t' --with-nth=5,6,7,8 \
+sel=$("${list_cmd[@]}" | fzf --ansi --delimiter='\t' --with-nth=5,6,7,8,9,10,11 \
   --reverse --cycle --header='Claude agents · enter: jump · ctrl-x: kill · ctrl-y: copy' \
   --preview="$self --preview {2}" --preview-window='up,70%,follow' \
   --bind="ctrl-x:execute-silent(kill {3})+reload(sleep 0.3; $self --list)" \
