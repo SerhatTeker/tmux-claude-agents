@@ -1,9 +1,13 @@
 {
-  "description": "Ring the terminal bell when an agent needs you, and keep the picker's agent cache fresh.",
+  "description": "Ring the terminal bell when an agent needs you, keep the picker's agent cache fresh, and show each agent's state and name on its tmux window.",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/agent-state.sh\" idle"
+          },
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/refresh-cache.sh\""
@@ -14,6 +18,10 @@
     "UserPromptSubmit": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/agent-state.sh\" working"
+          },
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/refresh-cache.sh\""
@@ -27,6 +35,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/agent-state.sh\" blocked"
+          },
+          {
+            "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/bell.sh\""
           },
           {
@@ -36,10 +48,25 @@
         ]
       }
     ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/agent-state.sh\" working"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "permission_prompt",
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/agent-state.sh\" blocked"
+          },
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/bell.sh\""
@@ -57,6 +84,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/agent-state.sh\" done"
+          },
+          {
+            "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/bell.sh\""
           },
           {
@@ -69,6 +100,10 @@
     "SessionEnd": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/agent-state.sh\" end"
+          },
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/refresh-cache.sh\" 0.3"
