@@ -31,7 +31,7 @@ Simple by design: it's just a few shell scripts.
 
 ## Features
 
-- **A central picker** (`prefix` + `u`) listing every running Claude agent —
+- **A central picker** (`prefix` + `g`) listing every running Claude agent —
   several in one project, and any running loose in an ordinary pane.
 - **Live status** per agent — `working` / `blocked` / `idle` — read straight
   from the session files Claude Code keeps, so you instantly see which need you.
@@ -73,8 +73,9 @@ set -g @plugin 'SerhatTeker/tmux-claude-agents'
 Then hit `prefix` + <kbd>I</kbd> to install.
 
 > **Keybinding note:** by default the plugin binds `prefix` + `y` (launch) and
-> `prefix` + `u` (list). If your config binds those elsewhere, either change the
-> [options](#options), or make sure the plugin loads **after** your own bindings
+> `prefix` + `g` (list, like herdr's Go To picker). If your config binds those
+> elsewhere, either change the [options](#options), or make sure the plugin
+> loads **after** your own bindings
 > (put `run '~/.tmux/plugins/tpm/tpm'` _after_ them) so the one you want wins.
 
 ### (Optional) Claude Code plugin
@@ -110,7 +111,7 @@ it registers.
 | -------------- | ------------------------------------------------------------------------------- |
 | `prefix` + `y` | Launch (or re-attach to) a Claude session for the current directory, in a popup |
 | `prefix` + `d` | Close the popup and go back to your window; the Claude session keeps running    |
-| `prefix` + `u` | Open the agent picker                                                           |
+| `prefix` + `g` | Open the agent picker                                                           |
 
 Inside the picker:
 
@@ -177,7 +178,7 @@ Set any of these before the plugin loads (defaults shown):
 
 ```tmux
 set -g @claude_launch_key     'y'        # prefix key: launch/open for current dir
-set -g @claude_list_key       'u'        # prefix key: open the picker
+set -g @claude_list_key       'g'        # prefix key: open the picker
 set -g @claude_command        'claude'   # command run in new sessions
 set -g @claude_args           ''         # extra args appended to the command
 set -g @claude_session_prefix 'claude-'  # tmux session name prefix
