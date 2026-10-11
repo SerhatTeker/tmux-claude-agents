@@ -9,9 +9,9 @@ session in a popup for each project directory. Open the popup, hand Claude the
 work, close it and get back to your editor. Each session lives in its own nested
 tmux session, so closing the popup never interrupts it. When you want to check
 in, an `fzf` picker lists every running session, shows what each one is doing,
-and jumps you straight to it. And when a session finishes or needs your
-attention, it rings a bell that highlights the window you launched it from — so
-you know where to go without even opening the picker.
+and jumps you straight to it. And with bell forwarding on, when a session
+finishes or needs your attention, it rings a bell that highlights the window you
+launched it from — so you know where to go without even opening the picker.
 
 Simple by design: it's just a few shell scripts.
 
@@ -45,8 +45,9 @@ Simple by design: it's just a few shell scripts.
 - **Quick kill** (`ctrl-x`) of a finished agent from the picker.
 - **Copy location** (`ctrl-y`) — puts an agent's `session:window.pane` target
   on the clipboard, ready for `tmux send-keys -t` and friends.
-- **Bell forwarding** — a bell in a dedicated session highlights the window
-  you launched it from, so you notice even without opening the picker
+- **Bell forwarding** (opt-in, `@claude_forward_bell 'on'`) — a bell in a
+  dedicated session highlights the window you launched it from, so you notice
+  even without opening the picker
   ([one-time Claude Code setup](#making-claude-ring-the-bell)).
 
 ## Prerequisites
@@ -184,7 +185,7 @@ set -g @claude_popup_height    '90%'     # popup height
 set -g @claude_fzf_options    ''         # extra options passed to the fzf picker
 set -g @claude_picker_cache   'on'       # paint the picker's first frame from a cache
 set -g @claude_sort           'status'   # picker order: 'status' or 'recent'
-set -g @claude_forward_bell   'on'       # highlight the origin window on a bell
+set -g @claude_forward_bell   'off'      # highlight the origin window on a bell
 set -g @claude_dot            '…'        # how @claude_state is drawn; see Agent states
 set -g @claude_status_dir     '~/.cache/claude-agent-status'  # model and context % per session
 ```
@@ -289,7 +290,7 @@ Use the same command under `Notification` with the `permission_prompt` matcher t
 ring when Claude asks for permission, or under `PreToolUse` matching
 `AskUserQuestion` to ring when it asks you a question.
 
-Set `@claude_forward_bell 'off'` to disable forwarding altogether.
+Forwarding is off by default; set `@claude_forward_bell 'on'` to turn it on.
 
 ### Customizing the fzf picker
 

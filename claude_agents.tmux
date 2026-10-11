@@ -26,8 +26,9 @@ tmux bind-key "$list_key" \
 # Forward a bell from a dedicated session to its origin window's pane, so
 # tmux's own bell machinery (window-status-bell-style, and terminal
 # passthrough when that window is visible) picks it up even though the
-# session that rang is a separate session from the origin.
-if [ "$(get_tmux_option @claude_forward_bell 'on')" = 'on' ]; then
+# session that rang is a separate session from the origin. Off by default: it
+# only matters for sessions started from the launch popup.
+if [ "$(get_tmux_option @claude_forward_bell 'off')" = 'on' ]; then
   tmux set-hook -g alert-bell \
     "run-shell -b \"$CURRENT_DIR/scripts/bell.sh '#{q:hook_session_name}'\""
 fi
