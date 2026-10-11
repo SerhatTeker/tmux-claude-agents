@@ -84,9 +84,10 @@ configuration this plugin wants, so you don't have to hand-edit
 `~/.claude/settings.json`:
 
 - **Rings the terminal bell** when an agent ends a turn, asks for permission, or
-  asks you a question — the moments the picker calls `done`, `idle` and `blocked`. That
-  is what [bell forwarding](#making-claude-ring-the-bell) needs in order to
-  highlight the window you launched the agent from.
+  asks you a question — the moments the picker calls `done`, `idle` and
+  `blocked`. That is what [bell forwarding](#making-claude-ring-the-bell) needs
+  in order to highlight the window you launched the agent from.
+  `@claude_bell 'off'` keeps it quiet.
 - **Refreshes the picker's agent cache** on those same events, plus session
   start/end and prompt submit. The picker paints its first frame from that cache
   (unless `@claude_picker_cache` is `'off'`), so without this it can be stale —
@@ -186,6 +187,7 @@ set -g @claude_fzf_options    ''         # extra options passed to the fzf picke
 set -g @claude_picker_cache   'on'       # paint the picker's first frame from a cache
 set -g @claude_sort           'status'   # picker order: 'status' or 'recent'
 set -g @claude_forward_bell   'off'      # highlight the origin window on a bell
+set -g @claude_bell           'on'       # the Claude plugin rings the bell on done / blocked
 set -g @claude_dot            '…'        # how @claude_state is drawn; see Agent states
 set -g @claude_status_dir     '~/.cache/claude-agent-status'  # model and context % per session
 ```
@@ -290,7 +292,8 @@ Use the same command under `Notification` with the `permission_prompt` matcher t
 ring when Claude asks for permission, or under `PreToolUse` matching
 `AskUserQuestion` to ring when it asks you a question.
 
-Forwarding is off by default; set `@claude_forward_bell 'on'` to turn it on.
+Forwarding is off by default; set `@claude_forward_bell 'on'` to turn it on. To
+keep the Claude plugin from ringing at all, set `@claude_bell 'off'`.
 
 ### Customizing the fzf picker
 

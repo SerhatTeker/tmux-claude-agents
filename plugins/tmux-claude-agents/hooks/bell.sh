@@ -6,11 +6,18 @@
 # send do not qualify. Writing \a here is what makes the window-status alert,
 # and this plugin's bell forwarding, fire at all.
 #
+# Set the tmux option @claude_bell to 'off' to keep the plugin's other hooks but
+# no bell.
+#
 # Never fails and never prints: a bell that cannot be delivered must not fail
 # the hook, or Claude reports a hook error on every turn. Note that `2>/dev/null`
 # comes *before* the `/dev/tty` redirection — a failed redirection is reported by
 # the shell itself, so a trailing `2>/dev/null` would be applied too late to
 # suppress it.
+
+if [ -n "${TMUX:-}" ] && [ "$(tmux show-option -gqv @claude_bell 2>/dev/null)" = off ]; then
+  exit 0
+fi
 
 # The hook's controlling terminal. Inside tmux that is the pane's own pty —
 # exactly where Claude's built-in bell would land.
