@@ -33,9 +33,10 @@ Simple by design: it's just a few shell scripts.
 
 - **A central picker** (`prefix` + `u`) listing every running Claude agent —
   several in one project, and any running loose in an ordinary pane.
-- **Live status** per agent — `working` / `waiting` / `idle` — read straight
+- **Live status** per agent — `working` / `blocked` / `idle` — read straight
   from the session files Claude Code keeps, so you instantly see which need you.
-  No setup.
+  No setup. With the Claude Code plugin also `done`, and the state and name on
+  each agent's window ([Agent states](#agent-states)).
 - **A live preview** of each agent's screen right in the picker.
 - **Smart jump** — selecting an agent switches your client to the window it
   was launched from, then resumes it in a popup over it.
@@ -82,13 +83,16 @@ configuration this plugin wants, so you don't have to hand-edit
 `~/.claude/settings.json`:
 
 - **Rings the terminal bell** when an agent ends a turn, asks for permission, or
-  asks you a question — the moments the picker calls `idle` and `waiting`. That
+  asks you a question — the moments the picker calls `done`, `idle` and `blocked`. That
   is what [bell forwarding](#making-claude-ring-the-bell) needs in order to
   highlight the window you launched the agent from.
 - **Refreshes the picker's agent cache** on those same events, plus session
   start/end and prompt submit. The picker paints its first frame from that cache
   (unless `@claude_picker_cache` is `'off'`), so without this it can be stale —
   showing `working` for an agent that has been waiting on you.
+- **Shows each agent's state and name on its tmux window**: the state goes into
+  the window option `@claude_state` (see [Agent states](#agent-states)), and the
+  window takes the session's name while the agent runs.
 
 ```
 /plugin marketplace add SerhatTeker/tmux-claude-agents
@@ -115,12 +119,55 @@ Inside the picker:
 | `ctrl-y`                  | Copy the highlighted agent's location (e.g. `claude-88074b0e:0.0`) and close |
 | `↑` / `↓`, type to filter | fzf navigation                                                               |
 
-Agents needing your attention (`waiting`, `idle`) sort to the top. Set
+Agents needing your attention (`blocked`, `done`, `idle`) sort to the top. Set
 `@claude_sort 'recent'` to sort by last activity instead, regardless of status.
 
 Every running Claude gets its own row — the picker identifies each by its
 process, not by its tmux session. So several agents in one project all show up
 separately, as does a Claude you started by hand in an ordinary pane.
+
+## Agent states
+
+States follow [herdr](https://herdr.dev), in the picker and on the window:
+
+| State     | Icon | Color  | Meaning                                    |
+| --------- | ---- | ------ | ------------------------------------------ |
+| `idle`    | `○`  | green  | your turn                                  |
+| `working` | `●`  | yellow | busy, leave it                             |
+| `blocked` | `●`  | red    | waiting on you: a permission or a question |
+| `done`    | `●`  | cyan   | finished, not looked at yet                |
+| unknown   | `·`  | grey   | no state reported                          |
+
+Colors are the basic ANSI ones, so the shades come from your terminal theme.
+
+`done` and the window parts need the [Claude Code plugin](#optional-claude-code-plugin):
+its hooks set `@claude_state` on the agent's window. A turn that ends in the
+window on screen goes straight to `idle`; otherwise `done` turns `idle` when you
+switch to the window. Without the plugin the picker still shows `idle`,
+`working` and `blocked`, from Claude's own status.
+
+**Window dot.** Add the dot to your window formats:
+
+```tmux
+setw -g window-status-format         ' #I #{?@claude_state,#{E:@claude_dot} ,}#W '
+setw -g window-status-current-format ' #I #{?@claude_state,#{E:@claude_dot} ,}#W '
+```
+
+If the format sets a color before the window name, set it again after the dot,
+with commas escaped as `#,` inside the `#{?...}`:
+`#{?@claude_state,#{E:@claude_dot}#[fg=green#,bg=black] ,}`.
+
+**Window name.** While an agent runs, its window takes the session's name.
+An automatic name (`<start folder>-<xx>`) is cut to `xx`, since the tmux session
+usually says which project it is; a name set with `--name` or `/rename` stays
+whole. Only windows nobody named are taken over: `automatic-rename` on, or a
+bare shell or version name such as `zsh` or `2.1.296`. Windows you named stay as
+they are, and the window gets its name back when the agent exits.
+
+**Picker columns.** Each row shows the session name, plus model and context %
+when a statusline writes them to `@claude_status_dir`: one
+`<session-id>.json` per session, with `model`, `effort` and `ctx` keys. Without
+the files those two columns stay empty.
 
 ## Options
 
@@ -138,6 +185,8 @@ set -g @claude_fzf_options    ''         # extra options passed to the fzf picke
 set -g @claude_picker_cache   'on'       # paint the picker's first frame from a cache
 set -g @claude_sort           'status'   # picker order: 'status' or 'recent'
 set -g @claude_forward_bell   'on'       # highlight the origin window on a bell
+set -g @claude_dot            '…'        # how @claude_state is drawn; see Agent states
+set -g @claude_status_dir     '~/.cache/claude-agent-status'  # model and context % per session
 ```
 
 For example, to skip permission prompts in launched sessions:
