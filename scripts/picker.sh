@@ -43,13 +43,13 @@ fi
 
 if [ "${1:-}" = '--copy' ]; then
   copy_to_clipboard "${2:-}" &&
-    tmux display-message "tmux-claude-hatch: copied ${2:-}"
+    tmux display-message "tmux-claude-agents: copied ${2:-}"
   exit 0
 fi
 
 for tool in fzf jq "$(get_tmux_option @claude_command 'claude')"; do
   command -v "$tool" >/dev/null 2>&1 || {
-    tmux display-message "tmux-claude-hatch: $tool is required for the picker"
+    tmux display-message "tmux-claude-agents: $tool is required for the picker"
     exit 0
   }
 done

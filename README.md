@@ -1,9 +1,9 @@
-# tmux-claude-hatch
+# tmux-claude-agents
 
 A tmux plugin (plus an optional Claude Code plugin) that runs a Claude Code
-session in a popup for each project directory. Open the hatch, hand Claude the
+session in a popup for each project directory. Open the popup, hand Claude the
 work, close it and get back to your editor. Each session lives in its own nested
-tmux session, so closing the hatch never interrupts it. When you want to check
+tmux session, so closing the popup never interrupts it. When you want to check
 in, an `fzf` picker lists every running session, shows what each one is doing,
 and jumps you straight to it. And when a session finishes or needs your
 attention, it rings a bell that highlights the window you launched it from — so
@@ -61,7 +61,7 @@ Simple by design: it's just a few shell scripts.
 Add to `~/.tmux.conf` (or `~/.config/tmux/tmux.conf`):
 
 ```tmux
-set -g @plugin 'craftzdog/tmux-claude-hatch'
+set -g @plugin 'SerhatTeker/tmux-claude-agents'
 ```
 
 Then hit `prefix` + <kbd>I</kbd> to install.
@@ -87,11 +87,11 @@ configuration this plugin wants, so you don't have to hand-edit
   showing `working` for an agent that has been waiting on you.
 
 ```
-/plugin marketplace add craftzdog/tmux-claude-hatch
-/plugin install tmux-claude-hatch@tmux-claude-hatch
+/plugin marketplace add SerhatTeker/tmux-claude-agents
+/plugin install tmux-claude-agents@tmux-claude-agents
 ```
 
-See [`plugins/tmux-claude-hatch`](./plugins/tmux-claude-hatch) for exactly what
+See [`plugins/tmux-claude-agents`](./plugins/tmux-claude-agents) for exactly what
 it registers.
 
 ## Usage
@@ -147,14 +147,14 @@ set -g @claude_args '--dangerously-skip-permissions'
 If you don't use tpm:
 
 ```sh
-git clone https://github.com/craftzdog/tmux-claude-hatch ~/clone/path
+git clone https://github.com/SerhatTeker/tmux-claude-agents ~/clone/path
 ```
 
 Add to `~/.tmux.conf`, then reload (`prefix` + <kbd>r</kbd> or
 `tmux source ~/.tmux.conf`):
 
 ```tmux
-run-shell ~/clone/path/claude_hatch.tmux
+run-shell ~/clone/path/claude_agents.tmux
 ```
 
 ## Customizations

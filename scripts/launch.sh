@@ -25,7 +25,7 @@ fi
 
 if ! tmux has-session -t "$session" 2>/dev/null; then
   [ -d "$path" ] || {
-    tmux display-message "tmux-claude-hatch: $path no longer exists"
+    tmux display-message "tmux-claude-agents: $path no longer exists"
     exit 0
   }
   tmux new-session -d -s "$session" -c "$path" "$cmd"

@@ -1,8 +1,8 @@
-# tmux-claude-hatch
+# tmux-claude-agents
 
 A [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins) that
 ships the hook configuration
-[tmux-claude-hatch](https://github.com/craftzdog/tmux-claude-hatch)
+[tmux-claude-agents](https://github.com/SerhatTeker/tmux-claude-agents)
 wants, so you don't have to paste JSON into `~/.claude/settings.json`.
 
 It does two things:
@@ -19,8 +19,8 @@ It does two things:
 ## Install
 
 ```
-/plugin marketplace add craftzdog/tmux-claude-hatch
-/plugin install tmux-claude-hatch@tmux-claude-hatch
+/plugin marketplace add SerhatTeker/tmux-claude-agents
+/plugin install tmux-claude-agents@tmux-claude-agents
 ```
 
 ## Notes

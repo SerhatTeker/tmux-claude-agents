@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared helpers for tmux-claude-hatch.
+# Shared helpers for tmux-claude-agents.
 
 # get_tmux_option <option-name> <default>
 # Echoes the global tmux option value, or the default when unset/empty.
