@@ -10,7 +10,8 @@ It does three things:
 - **Rings the terminal bell** when an agent ends a turn, asks for permission, or
   asks you a question — the three moments the picker calls `done`, `idle` and `blocked`.
   tmux only raises an alert for a real `\a` written to a pane's pty, which is what
-  makes window-status alerts and this plugin's bell forwarding fire.
+  makes window-status alerts and this plugin's bell forwarding fire. Set the
+  tmux option `@claude_bell 'off'` to keep the other hooks but no bell.
 - **Refreshes the picker's agent cache** on those same events, plus session
   start/end and prompt submit. The picker paints its first frame from that cache
   (unless `@claude_picker_cache` is `'off'`), so without this it can be stale —
