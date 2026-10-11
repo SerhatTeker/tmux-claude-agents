@@ -1,5 +1,9 @@
 # tmux-claude-agents
 
+A fork of [tmux-claude-hatch](https://github.com/craftzdog/tmux-claude-hatch)
+by Takuya Matsuyama. It adds herdr-style agent states (idle, working,
+blocked, done) and name, model and context columns to the picker.
+
 A tmux plugin (plus an optional Claude Code plugin) that runs a Claude Code
 session in a popup for each project directory. Open the popup, hand Claude the
 work, close it and get back to your editor. Each session lives in its own nested
@@ -274,4 +278,4 @@ above so tmux stores a literal `$` (in a single-quoted value, use a bare
 
 ## License
 
-[MIT](LICENSE) © Takuya Matsuyama
+[MIT](LICENSE) © Takuya Matsuyama, SerhatTeker
