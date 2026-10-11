@@ -1,7 +1,5 @@
 # tmux-claude-hatch
 
-[![screenshot](./docs/screenshot.jpg)](https://youtu.be/NnTV6r4l5D0)
-
 A tmux plugin (plus an optional Claude Code plugin) that runs a Claude Code
 session in a popup for each project directory. Open the hatch, hand Claude the
 work, close it and get back to your editor. Each session lives in its own nested
@@ -45,7 +43,6 @@ Simple by design: it's just a few shell scripts.
 - **Bell forwarding** — a bell in a dedicated session highlights the window
   you launched it from, so you notice even without opening the picker
   ([one-time Claude Code setup](#making-claude-ring-the-bell)).
-  ![bell-forwarding](./docs/bell-forwarding.png)
 
 ## Prerequisites
 
