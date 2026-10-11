@@ -1,5 +1,6 @@
 {
   "name": "tmux-claude-agents",
+  "description": "Claude Code hooks for the tmux-claude-agents tmux plugin: agent state and name on each tmux window, a fresh picker cache, and a terminal bell when an agent needs you.",
   "owner": {
     "name": "SerhatTeker",
     "email": "me@serhatteker.com"
